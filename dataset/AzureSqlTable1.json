@@ -31,7 +31,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "Dates"
+			"table": "Covid19_Metrics"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
