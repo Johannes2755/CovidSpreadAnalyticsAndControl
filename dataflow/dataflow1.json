@@ -20,7 +20,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "Parquet1",
 						"type": "DatasetReference"
 					},
 					"name": "metric"
@@ -157,8 +157,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> metric",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> metric",
 				"source(output(",
 				"          Country as string,",
 				"          CountryCode as string,",
