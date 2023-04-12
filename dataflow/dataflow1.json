@@ -46,7 +46,7 @@
 						"referenceName": "Parquet8",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "cosmossink"
 				},
 				{
 					"dataset": {
@@ -213,7 +213,7 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"     skipDuplicateMapOutputs: true) ~> cosmossink",
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
