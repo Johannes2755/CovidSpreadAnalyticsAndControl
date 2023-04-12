@@ -13,13 +13,6 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable2",
-						"type": "DatasetReference"
-					},
-					"name": "country"
-				},
-				{
-					"dataset": {
 						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					},
@@ -31,6 +24,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "metric"
+				},
+				{
+					"dataset": {
+						"referenceName": "Parquet3",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -40,6 +40,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "Geography",
+						"type": "DatasetReference"
+					},
+					"name": "countrysink"
 				}
 			],
 			"transformations": [
@@ -48,6 +55,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     parameter1 as string",
+				"}",
 				"source(output(",
 				"          CountryName as string,",
 				"          CountryCode as string,",
@@ -110,26 +120,46 @@
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> policydata",
 				"source(output(",
-				"          Country as string,",
-				"          CountryCode as string,",
+				"          ID as integer,",
+				"          Updated as date,",
+				"          Confirmed as integer,",
+				"          Confirmed_Change as integer,",
+				"          Deaths as integer,",
+				"          Deaths_Change as integer,",
+				"          Recovered as integer,",
+				"          Recovered_Change as integer,",
 				"          Latitude as decimal(10,5),",
-				"          Longitude as decimal(10,5)",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> country",
-				"source(output(",
-				"          Country as string,",
-				"          CountryCode as string,",
-				"          Latitude as decimal(10,5),",
-				"          Longitude as decimal(10,5)",
+				"          Longitude as decimal(10,5),",
+				"          ISO2 as string,",
+				"          ISO3 as string,",
+				"          Country_Region as string,",
+				"          load_time as timestamp",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> dates",
 				"source(output(",
+				"          ID as integer,",
+				"          Updated as date,",
+				"          Confirmed as integer,",
+				"          Confirmed_Change as integer,",
+				"          Deaths as integer,",
+				"          Deaths_Change as integer,",
+				"          Recovered as integer,",
+				"          Recovered_Change as integer,",
+				"          Latitude as decimal(10,5),",
+				"          Longitude as decimal(10,5),",
+				"          ISO2 as string,",
+				"          ISO3 as string,",
+				"          Country_Region as string,",
+				"          load_time as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> metric",
+				"source(output(",
 				"          Country as string,",
 				"          CountryCode as string,",
 				"          Latitude as decimal(10,5),",
@@ -137,8 +167,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> metric",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> source1",
 				"policydata select(mapColumn(",
 				"          CountryName,",
 				"          Jurisdiction",
@@ -152,7 +182,15 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> countrysink"
 			]
 		}
 	}
