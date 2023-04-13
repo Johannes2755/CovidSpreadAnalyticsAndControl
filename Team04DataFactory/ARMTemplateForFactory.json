@@ -773,7 +773,8 @@
 									"source1": {},
 									"onpremmetric": {},
 									"cosmossink": {},
-									"countrysink": {}
+									"countrysink": {},
+									"deathsink": {}
 								}
 							},
 							"staging": {},
@@ -2059,6 +2060,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "countrysink"
+						},
+						{
+							"dataset": {
+								"referenceName": "deathsink",
+								"type": "DatasetReference"
+							},
+							"name": "deathsink"
 						}
 					],
 					"transformations": [
@@ -2067,6 +2075,9 @@
 						},
 						{
 							"name": "union1"
+						},
+						{
+							"name": "select2"
 						}
 					],
 					"scriptLines": [
@@ -2211,6 +2222,16 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select1",
 						"metric, onpremmetric union(byName: true)~> union1",
+						"union1 select(mapColumn(",
+						"          ID,",
+						"          Deaths,",
+						"          Deaths_Change,",
+						"          Latitude,",
+						"          Longitude,",
+						"          Country_Region",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
 						"select1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
@@ -2226,7 +2247,15 @@
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> countrysink"
+						"     skipDuplicateMapOutputs: true) ~> countrysink",
+						"select2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> deathsink"
 					]
 				}
 			},
@@ -2237,7 +2266,32 @@
 				"[concat(variables('factoryId'), '/datasets/Parquet3')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet8')]",
-				"[concat(variables('factoryId'), '/datasets/Geography')]"
+				"[concat(variables('factoryId'), '/datasets/Geography')]",
+				"[concat(variables('factoryId'), '/datasets/deathsink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/deathsink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "metricpolicydata"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
 			]
 		}
 	]
