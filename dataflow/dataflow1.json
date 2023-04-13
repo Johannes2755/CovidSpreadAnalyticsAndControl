@@ -60,7 +60,7 @@
 						"referenceName": "Parquet5",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "datessink"
 				}
 			],
 			"transformations": [
@@ -233,7 +233,7 @@
 				"     validateSchema: false,",
 				"     format: 'parquet',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> datessink"
 			]
 		}
 	}
