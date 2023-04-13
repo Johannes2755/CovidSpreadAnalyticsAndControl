@@ -57,10 +57,10 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "deathsink",
+						"referenceName": "Parquet5",
 						"type": "DatasetReference"
 					},
-					"name": "deathsink"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
@@ -69,9 +69,6 @@
 				},
 				{
 					"name": "union1"
-				},
-				{
-					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -211,39 +208,11 @@
 				"     format: 'parquet') ~> onpremmetric",
 				"policydata select(mapColumn(",
 				"          C1Schoolclosing = {C1_School closing},",
-				"          C2Workplaceclosing = {C2_Workplace closing},",
-				"          C3Cancelpublicevents = {C3_Cancel public events},",
-				"          C4Restrictionsongatherings = {C4_Restrictions on gatherings},",
-				"          C5Closepublictransport = {C5_Close public transport},",
-				"          C6Stayathomerequirements = {C6_Stay at home requirements},",
-				"          C7Restrictionsoninternalmovement = {C7_Restrictions on internal movement},",
-				"          C8Internationaltravelcontrols = {C8_International travel controls},",
-				"          E1Incomesupport = {E1_Income support},",
-				"          E2Debtcontractrelief = {E2_Debt contract relief},",
-				"          E3Fiscalmeasures = {E3_Fiscal measures},",
-				"          E4Internationalsupport = {E4_International support},",
-				"          H1Publicinformationcampaigns = {H1_Public information campaigns},",
-				"          H2Testingpolicy = {H2_Testing policy},",
-				"          H3Contacttracing = {H3_Contact tracing},",
-				"          H4Emergencyinvestmentinhealthcare = {H4_Emergency investment in healthcare},",
-				"          H5Investmentinvaccines = {H5_Investment in vaccines},",
-				"          H6FacialCoverings = {H6_Facial Coverings},",
-				"          H7Vaccinationpolicy = {H7_Vaccination policy},",
-				"          H8Protectionofelderlypeople = {H8_Protection of elderly people}",
+				"          C2Workplaceclosing = {C2_Workplace closing}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"metric, onpremmetric union(byName: true)~> union1",
-				"union1 select(mapColumn(",
-				"          ID,",
-				"          Deaths,",
-				"          Deaths_Change,",
-				"          Latitude,",
-				"          Longitude,",
-				"          Country_Region",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -260,14 +229,11 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> countrysink",
-				"select2 sink(allowSchemaDrift: true,",
+				"dates sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> deathsink"
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
