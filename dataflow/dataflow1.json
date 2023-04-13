@@ -54,6 +54,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "countrysink"
+				},
+				{
+					"dataset": {
+						"referenceName": "deathsink",
+						"type": "DatasetReference"
+					},
+					"name": "deathsink"
 				}
 			],
 			"transformations": [
@@ -62,6 +69,9 @@
 				},
 				{
 					"name": "union1"
+				},
+				{
+					"name": "select2"
 				}
 			],
 			"scriptLines": [
@@ -206,6 +216,16 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"metric, onpremmetric union(byName: true)~> union1",
+				"union1 select(mapColumn(",
+				"          ID,",
+				"          Deaths,",
+				"          Deaths_Change,",
+				"          Latitude,",
+				"          Longitude,",
+				"          Country_Region",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
@@ -221,7 +241,15 @@
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> countrysink"
+				"     skipDuplicateMapOutputs: true) ~> countrysink",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> deathsink"
 			]
 		}
 	}
