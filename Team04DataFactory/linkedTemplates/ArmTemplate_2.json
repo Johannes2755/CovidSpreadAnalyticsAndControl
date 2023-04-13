@@ -88,7 +88,7 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "AzureSqlTable1",
+								"referenceName": "Parquet4",
 								"type": "DatasetReference"
 							},
 							"name": "dates"
@@ -221,26 +221,10 @@
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
 						"     documentForm: 'documentPerLine') ~> policydata",
-						"source(output(",
-						"          ID as integer,",
-						"          Updated as date,",
-						"          Confirmed as integer,",
-						"          Confirmed_Change as integer,",
-						"          Deaths as integer,",
-						"          Deaths_Change as integer,",
-						"          Recovered as integer,",
-						"          Recovered_Change as integer,",
-						"          Latitude as decimal(10,5),",
-						"          Longitude as decimal(10,5),",
-						"          ISO2 as string,",
-						"          ISO3 as string,",
-						"          Country_Region as string,",
-						"          load_time as timestamp",
-						"     ),",
-						"     allowSchemaDrift: true,",
+						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> dates",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> dates",
 						"source(output(",
 						"          ID as integer,",
 						"          Updated as date,",
@@ -1276,6 +1260,37 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "dataflow3",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow3",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"recoverysink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -1286,7 +1301,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
+				"[concat(variables('factoryId'), '/dataflows/dataflow2')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow3')]"
 			]
 		}
 	]
