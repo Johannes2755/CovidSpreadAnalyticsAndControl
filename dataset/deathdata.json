@@ -2,15 +2,17 @@
 	"name": "deathdata",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorage1",
+			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileSystem": "metricpolicydata"
+				"type": "AzureBlobStorageLocation",
+				"fileName": "deathdata",
+				"folderPath": "DefaultDirectory",
+				"container": "metricpolicydata"
 			},
 			"compressionCodec": "snappy"
 		},
