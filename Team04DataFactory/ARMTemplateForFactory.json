@@ -816,6 +816,37 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "dataflow3",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow3",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"source2": {},
+									"recoverysink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
 					}
 				],
 				"policy": {
@@ -826,7 +857,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow2')]"
+				"[concat(variables('factoryId'), '/dataflows/dataflow2')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow3')]"
 			]
 		},
 		{
@@ -2360,9 +2392,22 @@
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> onpremmetric",
 						"policydata select(mapColumn(",
-						"          C1Schoolclosing = {C1_School closing},",
-						"          C2Workplaceclosing = {C2_Workplace closing},",
-						"          C3Cancelpublicevents = {C3_Cancel public events}",
+						"          Schoolclosing = {C1_School closing},",
+						"          Workplaceclosing = {C2_Workplace closing},",
+						"          Cancelpublicevents = {C3_Cancel public events},",
+						"          Restrictionsongatherings = {C4_Restrictions on gatherings},",
+						"          Closepublictransport = {C5_Close public transport},",
+						"          Stayathomerequirements = {C6_Stay at home requirements},",
+						"          Restrictionsoninternalmovement = {C7_Restrictions on internal movement},",
+						"          Internationaltravelcontrols = {C8_International travel controls},",
+						"          Publicinformationcampaigns = {H1_Public information campaigns},",
+						"          Testingpolicy = {H2_Testing policy},",
+						"          Contacttracing = {H3_Contact tracing},",
+						"          Emergencyinvestmentinhealthcare = {H4_Emergency investment in healthcare},",
+						"          Investmentinvaccines = {H5_Investment in vaccines},",
+						"          FacialCoverings = {H6_Facial Coverings},",
+						"          Vaccinationpolicy = {H7_Vaccination policy},",
+						"          Protectionofelderlypeople = {H8_Protection of elderly people}",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select1",
@@ -2375,7 +2420,9 @@
 						"          Latitude,",
 						"          Longitude,",
 						"          Country_Region,",
-						"          load_time",
+						"          load_time,",
+						"          ISO2,",
+						"          ISO3",
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select2",
