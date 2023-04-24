@@ -581,6 +581,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
 					"compressionCodec": "snappy"
@@ -671,6 +672,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
 					"compressionCodec": "snappy"
