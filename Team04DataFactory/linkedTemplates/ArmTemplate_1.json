@@ -408,6 +408,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "dbo.Dates.parquet",
 						"container": "team4sql"
 					},
 					"compressionCodec": "snappy"
@@ -561,7 +562,7 @@
 						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},
@@ -584,7 +585,7 @@
 						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},
@@ -607,7 +608,7 @@
 						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},
@@ -630,7 +631,7 @@
 						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},
@@ -675,7 +676,7 @@
 						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},

@@ -560,7 +560,7 @@
 						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
-					"compressionCodec": "snappy"
+					"compressionCodec": "none"
 				},
 				"schema": []
 			},
