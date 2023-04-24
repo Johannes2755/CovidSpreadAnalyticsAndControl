@@ -2,16 +2,16 @@
 	"name": "Parquet8",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage1",
+			"referenceName": "AzureDataLakeStorage2",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
+				"type": "AzureBlobFSLocation",
 				"folderPath": "DefaultDirectory",
-				"container": "metricpolicydata"
+				"fileSystem": "metricpolicydata"
 			},
 			"compressionCodec": "snappy"
 		},
