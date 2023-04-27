@@ -771,16 +771,13 @@
 							"dataflow": {
 								"referenceName": "dataflow1",
 								"type": "DataFlowReference",
-								"parameters": {
-									"parameter1": "{_rid}"
-								},
+								"parameters": {},
 								"datasetParameters": {
 									"policydata": {},
 									"dates": {},
 									"metric": {},
 									"source1": {},
 									"onpremmetric": {},
-									"cosmossink": {},
 									"countrysink": {},
 									"datessink": {},
 									"deathsink": {}
@@ -867,6 +864,53 @@
 				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow2')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow4",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow4')]"
 			]
 		},
 		{
@@ -1134,6 +1178,30 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/CosmosDbNoSql2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CosmosParquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "metricpolicydata"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
 			]
 		},
 		{
@@ -1706,78 +1774,11 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "policies.parquet",
-						"folderPath": "DefaultDirectory",
 						"fileSystem": "metricpolicydata"
 					},
 					"compressionCodec": "none"
 				},
-				"schema": [
-					{
-						"name": "Schoolclosing",
-						"type": "INT32"
-					},
-					{
-						"name": "Workplaceclosing",
-						"type": "INT32"
-					},
-					{
-						"name": "Cancelpublicevents",
-						"type": "INT32"
-					},
-					{
-						"name": "Restrictionsongatherings",
-						"type": "INT32"
-					},
-					{
-						"name": "Closepublictransport",
-						"type": "INT32"
-					},
-					{
-						"name": "Stayathomerequirements",
-						"type": "INT32"
-					},
-					{
-						"name": "Restrictionsoninternalmovement",
-						"type": "INT32"
-					},
-					{
-						"name": "Internationaltravelcontrols",
-						"type": "INT32"
-					},
-					{
-						"name": "Publicinformationcampaigns",
-						"type": "INT32"
-					},
-					{
-						"name": "Testingpolicy",
-						"type": "INT32"
-					},
-					{
-						"name": "Contacttracing",
-						"type": "INT32"
-					},
-					{
-						"name": "Emergencyinvestmentinhealthcare",
-						"type": "INT32"
-					},
-					{
-						"name": "Investmentinvaccines",
-						"type": "INT32"
-					},
-					{
-						"name": "FacialCoverings",
-						"type": "INT32"
-					},
-					{
-						"name": "Vaccinationpolicy",
-						"type": "INT32"
-					},
-					{
-						"name": "Protectionofelderlypeople",
-						"type": "INT32"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
@@ -2331,13 +2332,6 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "Parquet8",
-								"type": "DatasetReference"
-							},
-							"name": "cosmossink"
-						},
-						{
-							"dataset": {
 								"referenceName": "Geography",
 								"type": "DatasetReference"
 							},
@@ -2360,9 +2354,6 @@
 					],
 					"transformations": [
 						{
-							"name": "select1"
-						},
-						{
 							"name": "union1"
 						},
 						{
@@ -2370,9 +2361,6 @@
 						}
 					],
 					"scriptLines": [
-						"parameters{",
-						"     parameter1 as string",
-						"}",
 						"source(output(",
 						"          CountryName as string,",
 						"          CountryCode as string,",
@@ -2488,26 +2476,6 @@
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> onpremmetric",
-						"policydata select(mapColumn(",
-						"          Schoolclosing = {C1_School closing},",
-						"          Workplaceclosing = {C2_Workplace closing},",
-						"          Cancelpublicevents = {C3_Cancel public events},",
-						"          Restrictionsongatherings = {C4_Restrictions on gatherings},",
-						"          Closepublictransport = {C5_Close public transport},",
-						"          Stayathomerequirements = {C6_Stay at home requirements},",
-						"          Restrictionsoninternalmovement = {C7_Restrictions on internal movement},",
-						"          Internationaltravelcontrols = {C8_International travel controls},",
-						"          Publicinformationcampaigns = {H1_Public information campaigns},",
-						"          Testingpolicy = {H2_Testing policy},",
-						"          Contacttracing = {H3_Contact tracing},",
-						"          Emergencyinvestmentinhealthcare = {H4_Emergency investment in healthcare},",
-						"          Investmentinvaccines = {H5_Investment in vaccines},",
-						"          FacialCoverings = {H6_Facial Coverings},",
-						"          Vaccinationpolicy = {H7_Vaccination policy},",
-						"          Protectionofelderlypeople = {H8_Protection of elderly people}",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
 						"metric, onpremmetric union(byName: true)~> union1",
 						"union1 select(mapColumn(",
 						"          ID,",
@@ -2523,34 +2491,6 @@
 						"     ),",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true) ~> select2",
-						"select1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Schoolclosing as integer,",
-						"          Workplaceclosing as integer,",
-						"          Cancelpublicevents as integer,",
-						"          Restrictionsongatherings as integer,",
-						"          Closepublictransport as integer,",
-						"          Stayathomerequirements as integer,",
-						"          Restrictionsoninternalmovement as integer,",
-						"          Internationaltravelcontrols as integer,",
-						"          Publicinformationcampaigns as integer,",
-						"          Testingpolicy as integer,",
-						"          Contacttracing as integer,",
-						"          Emergencyinvestmentinhealthcare as integer,",
-						"          Investmentinvaccines as integer,",
-						"          FacialCoverings as integer,",
-						"          Vaccinationpolicy as integer,",
-						"          Protectionofelderlypeople as integer",
-						"     ),",
-						"     format: 'parquet',",
-						"     partitionFileNames:['policies.parquet'],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> cosmossink",
 						"source1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
@@ -2590,7 +2530,6 @@
 				"[concat(variables('factoryId'), '/datasets/Parquet1')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet3')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet8')]",
 				"[concat(variables('factoryId'), '/datasets/Geography')]",
 				"[concat(variables('factoryId'), '/datasets/dates')]",
 				"[concat(variables('factoryId'), '/datasets/deathdata')]"
@@ -2824,6 +2763,165 @@
 				"[concat(variables('factoryId'), '/datasets/Parquet1')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
 				"[concat(variables('factoryId'), '/datasets/recoverysink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow4')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Json2",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "CosmosParquet",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          CountryName as string,",
+						"          CountryCode as string,",
+						"          RegionName as string,",
+						"          RegionCode as string,",
+						"          Jurisdiction as string,",
+						"          Date as string,",
+						"          {C1_School closing} as integer,",
+						"          C1_Flag as integer,",
+						"          {C2_Workplace closing} as integer,",
+						"          C2_Flag as integer,",
+						"          {C3_Cancel public events} as integer,",
+						"          C3_Flag as integer,",
+						"          {C4_Restrictions on gatherings} as integer,",
+						"          C4_Flag as integer,",
+						"          {C5_Close public transport} as integer,",
+						"          C5_Flag as integer,",
+						"          {C6_Stay at home requirements} as integer,",
+						"          C6_Flag as integer,",
+						"          {C7_Restrictions on internal movement} as integer,",
+						"          C7_Flag as integer,",
+						"          {C8_International travel controls} as integer,",
+						"          {E1_Income support} as integer,",
+						"          E1_Flag as integer,",
+						"          {E2_Debt contract relief} as integer,",
+						"          {E3_Fiscal measures} as integer,",
+						"          {E4_International support} as integer,",
+						"          {H1_Public information campaigns} as integer,",
+						"          H1_Flag as integer,",
+						"          {H2_Testing policy} as integer,",
+						"          {H3_Contact tracing} as integer,",
+						"          {H4_Emergency investment in healthcare} as integer,",
+						"          {H5_Investment in vaccines} as integer,",
+						"          {H6_Facial Coverings} as integer,",
+						"          H6_Flag as integer,",
+						"          {H7_Vaccination policy} as integer,",
+						"          H7_Flag as integer,",
+						"          {H8_Protection of elderly people} as integer,",
+						"          H8_Flag as integer,",
+						"          M1_Wildcard as integer,",
+						"          StringencyIndex as integer,",
+						"          StringencyIndexForDisplay as integer,",
+						"          StringencyLegacyIndex as integer,",
+						"          StringencyLegacyIndexForDisplay as integer,",
+						"          GovernmentResponseIndex as integer,",
+						"          GovernmentResponseIndexForDisplay as integer,",
+						"          ContainmentHealthIndex as integer,",
+						"          ContainmentHealthIndexForDisplay as integer,",
+						"          EconomicSupportIndex as integer,",
+						"          EconomicSupportIndexForDisplay as integer,",
+						"          id as string,",
+						"          {_rid} as string,",
+						"          {_self} as string,",
+						"          {_etag} as string,",
+						"          {_attachments} as string,",
+						"          {_ts} as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'documentPerLine') ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     partitionFileNames:['policies.parquet'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          CountryName,",
+						"          CountryCode,",
+						"          RegionName,",
+						"          RegionCode,",
+						"          Jurisdiction,",
+						"          Date,",
+						"          C1Schoolclosing = {C1_School closing},",
+						"          C1Flag = C1_Flag,",
+						"          C2Workplaceclosing = {C2_Workplace closing},",
+						"          C2Flag = C2_Flag,",
+						"          C3Cancelpublicevents = {C3_Cancel public events},",
+						"          C3Flag = C3_Flag,",
+						"          C4Restrictionsongatherings = {C4_Restrictions on gatherings},",
+						"          C4Flag = C4_Flag,",
+						"          C5Closepublictransport = {C5_Close public transport},",
+						"          C5Flag = C5_Flag,",
+						"          C6Stayathomerequirements = {C6_Stay at home requirements},",
+						"          C6Flag = C6_Flag,",
+						"          C7Restrictionsoninternalmovement = {C7_Restrictions on internal movement},",
+						"          C7Flag = C7_Flag,",
+						"          C8Internationaltravelcontrols = {C8_International travel controls},",
+						"          E1Incomesupport = {E1_Income support},",
+						"          E1Flag = E1_Flag,",
+						"          E2Debtcontractrelief = {E2_Debt contract relief},",
+						"          E3Fiscalmeasures = {E3_Fiscal measures},",
+						"          E4Internationalsupport = {E4_International support},",
+						"          H1Publicinformationcampaigns = {H1_Public information campaigns},",
+						"          H1Flag = H1_Flag,",
+						"          H2Testingpolicy = {H2_Testing policy},",
+						"          H3Contacttracing = {H3_Contact tracing},",
+						"          H4Emergencyinvestmentinhealthcare = {H4_Emergency investment in healthcare},",
+						"          H5Investmentinvaccines = {H5_Investment in vaccines},",
+						"          H6FacialCoverings = {H6_Facial Coverings},",
+						"          H6Flag = H6_Flag,",
+						"          H7Vaccinationpolicy = {H7_Vaccination policy},",
+						"          H7Flag = H7_Flag,",
+						"          H8Protectionofelderlypeople = {H8_Protection of elderly people},",
+						"          H8Flag = H8_Flag,",
+						"          M1Wildcard = M1_Wildcard,",
+						"          StringencyIndex,",
+						"          StringencyIndexForDisplay,",
+						"          GovernmentResponseIndex,",
+						"          GovernmentResponseIndexForDisplay,",
+						"          ContainmentHealthIndex,",
+						"          ContainmentHealthIndexForDisplay,",
+						"          EconomicSupportIndex,",
+						"          EconomicSupportIndexForDisplay,",
+						"          StringencyLegacyIndex,",
+						"          StringencyLegacyIndexForDisplay,",
+						"          each(match(/* All input columns */true()),",
+						"               /* Input name */$$ = $$)",
+						"     ),",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json2')]",
+				"[concat(variables('factoryId'), '/datasets/CosmosParquet')]"
 			]
 		}
 	]
