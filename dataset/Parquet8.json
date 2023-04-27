@@ -10,77 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "policies.parquet",
-				"folderPath": "DefaultDirectory",
 				"fileSystem": "metricpolicydata"
 			},
 			"compressionCodec": "none"
 		},
-		"schema": [
-			{
-				"name": "Schoolclosing",
-				"type": "INT32"
-			},
-			{
-				"name": "Workplaceclosing",
-				"type": "INT32"
-			},
-			{
-				"name": "Cancelpublicevents",
-				"type": "INT32"
-			},
-			{
-				"name": "Restrictionsongatherings",
-				"type": "INT32"
-			},
-			{
-				"name": "Closepublictransport",
-				"type": "INT32"
-			},
-			{
-				"name": "Stayathomerequirements",
-				"type": "INT32"
-			},
-			{
-				"name": "Restrictionsoninternalmovement",
-				"type": "INT32"
-			},
-			{
-				"name": "Internationaltravelcontrols",
-				"type": "INT32"
-			},
-			{
-				"name": "Publicinformationcampaigns",
-				"type": "INT32"
-			},
-			{
-				"name": "Testingpolicy",
-				"type": "INT32"
-			},
-			{
-				"name": "Contacttracing",
-				"type": "INT32"
-			},
-			{
-				"name": "Emergencyinvestmentinhealthcare",
-				"type": "INT32"
-			},
-			{
-				"name": "Investmentinvaccines",
-				"type": "INT32"
-			},
-			{
-				"name": "FacialCoverings",
-				"type": "INT32"
-			},
-			{
-				"name": "Vaccinationpolicy",
-				"type": "INT32"
-			},
-			{
-				"name": "Protectionofelderlypeople",
-				"type": "INT32"
-			}
-		]
+		"schema": []
 	}
 }
