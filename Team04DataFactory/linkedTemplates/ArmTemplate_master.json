@@ -196,9 +196,6 @@
 					},
 					"SqlServer3_connectionString": {
 						"value": "[parameters('SqlServer3_connectionString')]"
-					},
-					"SqlServer4_connectionString": {
-						"value": "[parameters('SqlServer4_connectionString')]"
 					}
 				}
 			},
@@ -219,6 +216,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SqlServer4_connectionString": {
+						"value": "[parameters('SqlServer4_connectionString')]"
 					},
 					"SqlServer5_connectionString": {
 						"value": "[parameters('SqlServer5_connectionString')]"
