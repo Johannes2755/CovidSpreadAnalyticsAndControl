@@ -2,7 +2,7 @@
 	"name": "SQL script 6",
 	"properties": {
 		"content": {
-			"query": "DROP EXTERNAL TABLE dbo.cases;",
+			"query": "DROP EXTERNAL TABLE dbo.deaths;\nDROP EXTERNAL TABLE dbo.recoveries;",
 			"metadata": {
 				"language": "sql"
 			},
