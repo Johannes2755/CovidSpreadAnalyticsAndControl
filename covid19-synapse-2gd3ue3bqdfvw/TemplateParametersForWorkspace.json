@@ -1,0 +1,21 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "covid19-synapse-2gd3ue3bqdfvw"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"covid19-synapse-2gd3ue3bqdfvw-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:covid19-synapse-2gd3ue3bqdfvw.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://team04storage.dfs.core.windows.net/"
+		},
+		"covid19-synapse-2gd3ue3bqdfvw-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://covid192gd3ue3bqdfvw.dfs.core.windows.net"
+		}
+	}
+}
