@@ -41,7 +41,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SqlServerTable3",
+						"referenceName": "OnPremSQL",
 						"type": "DatasetReference"
 					}
 				],
