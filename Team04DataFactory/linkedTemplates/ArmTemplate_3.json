@@ -399,7 +399,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "Parquet1",
+								"referenceName": "SQLMetrics",
 								"type": "DatasetReference"
 							},
 							"name": "source1"
@@ -1478,7 +1478,8 @@
 									"source1": {},
 									"source2": {},
 									"sink1": {}
-								}
+								},
+								"linkedServiceParameters": {}
 							},
 							"staging": {},
 							"compute": {
