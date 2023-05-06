@@ -178,7 +178,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -203,7 +203,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet1",
+								"referenceName": "SQLMetrics",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -237,7 +237,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -262,7 +262,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet3",
+								"referenceName": "SQLCountry",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -296,7 +296,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -321,7 +321,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet4",
+								"referenceName": "SQLDates",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -400,7 +400,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -425,7 +425,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet6",
+								"referenceName": "OnPremMetrics",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -737,15 +737,15 @@
 				"[concat(variables('factoryId'), '/datasets/CosmosDbNoSqlContainer1')]",
 				"[concat(variables('factoryId'), '/datasets/Json1')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet1')]",
+				"[concat(variables('factoryId'), '/datasets/SQLMetrics')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable2')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet3')]",
+				"[concat(variables('factoryId'), '/datasets/SQLCountry')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTable3')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet4')]",
+				"[concat(variables('factoryId'), '/datasets/SQLDates')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
 				"[concat(variables('factoryId'), '/datasets/OnPremCountry')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable3')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
+				"[concat(variables('factoryId'), '/datasets/OnPremMetrics')]",
 				"[concat(variables('factoryId'), '/datasets/SqlServerTable2')]",
 				"[concat(variables('factoryId'), '/datasets/OnPremDates')]"
 			]

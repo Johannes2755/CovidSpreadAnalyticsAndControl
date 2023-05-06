@@ -533,7 +533,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -558,7 +558,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet1",
+								"referenceName": "SQLMetrics",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -592,7 +592,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -617,7 +617,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet3",
+								"referenceName": "SQLCountry",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -651,7 +651,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -676,7 +676,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet4",
+								"referenceName": "SQLDates",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -755,7 +755,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "ParquetWriteSettings"
@@ -780,7 +780,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Parquet6",
+								"referenceName": "OnPremMetrics",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
