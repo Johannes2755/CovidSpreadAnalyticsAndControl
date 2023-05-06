@@ -55,6 +55,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'CosmosDbNoSql2'"
 		},
+		"OnPremSQLServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'OnPremSQLServer'"
+		},
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
@@ -86,10 +90,6 @@
 		"TeamSqlServer04_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'TeamSqlServer04'"
-		},
-		"OnPremSQLServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'OnPremSQLServer'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -212,6 +212,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"OnPremSQLServer_connectionString": {
+						"value": "[parameters('OnPremSQLServer_connectionString')]"
+					},
 					"SqlServer1_connectionString": {
 						"value": "[parameters('SqlServer1_connectionString')]"
 					},
@@ -229,9 +232,6 @@
 					},
 					"TeamSqlServer04_connectionString": {
 						"value": "[parameters('TeamSqlServer04_connectionString')]"
-					},
-					"OnPremSQLServer_connectionString": {
-						"value": "[parameters('OnPremSQLServer_connectionString')]"
 					}
 				}
 			},
@@ -257,6 +257,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'Team04DataFactory_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "Team04DataFactory_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'Team04DataFactory_ArmTemplate_3')]"
 			]
 		}
 	]

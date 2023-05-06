@@ -55,6 +55,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'CosmosDbNoSql2'"
 		},
+		"OnPremSQLServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'OnPremSQLServer'"
+		},
 		"SqlServer1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServer1'"
@@ -86,10 +90,6 @@
 		"TeamSqlServer04_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'TeamSqlServer04'"
-		},
-		"OnPremSQLServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'OnPremSQLServer'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
@@ -1227,6 +1227,53 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline5')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow8",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow8')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/testpipe')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2044,6 +2091,97 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/OnPremSQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "OnPremSQLServer",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Updated",
+						"type": "date"
+					},
+					{
+						"name": "Confirmed",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Confirmed_Change",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Deaths",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Deaths_Change",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Recovered",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Recovered_Change",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Latitude",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 5
+					},
+					{
+						"name": "Longitude",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 5
+					},
+					{
+						"name": "ISO2",
+						"type": "varchar"
+					},
+					{
+						"name": "ISO3",
+						"type": "varchar"
+					},
+					{
+						"name": "Country_Region",
+						"type": "varchar"
+					},
+					{
+						"name": "load_time",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Covid19_Metrics"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/OnPremSQLServer')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2127,6 +2265,31 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet10')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "factPolicies.parquet",
+						"fileSystem": "metricpolicydata"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage2')]"
 			]
 		},
 		{
@@ -2380,6 +2543,252 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet9')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "policies.parquet",
+						"fileSystem": "metricpolicydata"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "CountryName",
+						"type": "UTF8"
+					},
+					{
+						"name": "CountryCode",
+						"type": "UTF8"
+					},
+					{
+						"name": "RegionName",
+						"type": "UTF8"
+					},
+					{
+						"name": "RegionCode",
+						"type": "UTF8"
+					},
+					{
+						"name": "Jurisdiction",
+						"type": "UTF8"
+					},
+					{
+						"name": "Date",
+						"type": "UTF8"
+					},
+					{
+						"name": "C1Schoolclosing",
+						"type": "INT32"
+					},
+					{
+						"name": "C1Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C2Workplaceclosing",
+						"type": "INT32"
+					},
+					{
+						"name": "C2Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C3Cancelpublicevents",
+						"type": "INT32"
+					},
+					{
+						"name": "C3Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C4Restrictionsongatherings",
+						"type": "INT32"
+					},
+					{
+						"name": "C4Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C5Closepublictransport",
+						"type": "INT32"
+					},
+					{
+						"name": "C5Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C6Stayathomerequirements",
+						"type": "INT32"
+					},
+					{
+						"name": "C6Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C7Restrictionsoninternalmovement",
+						"type": "INT32"
+					},
+					{
+						"name": "C7Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "C8Internationaltravelcontrols",
+						"type": "INT32"
+					},
+					{
+						"name": "E1Incomesupport",
+						"type": "INT32"
+					},
+					{
+						"name": "E1Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "E2Debtcontractrelief",
+						"type": "INT32"
+					},
+					{
+						"name": "E3Fiscalmeasures",
+						"type": "INT32"
+					},
+					{
+						"name": "E4Internationalsupport",
+						"type": "INT32"
+					},
+					{
+						"name": "H1Publicinformationcampaigns",
+						"type": "INT32"
+					},
+					{
+						"name": "H1Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "H2Testingpolicy",
+						"type": "INT32"
+					},
+					{
+						"name": "H3Contacttracing",
+						"type": "INT32"
+					},
+					{
+						"name": "H4Emergencyinvestmentinhealthcare",
+						"type": "INT32"
+					},
+					{
+						"name": "H5Investmentinvaccines",
+						"type": "INT32"
+					},
+					{
+						"name": "H6FacialCoverings",
+						"type": "INT32"
+					},
+					{
+						"name": "H6Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "H7Vaccinationpolicy",
+						"type": "INT32"
+					},
+					{
+						"name": "H7Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "H8Protectionofelderlypeople",
+						"type": "INT32"
+					},
+					{
+						"name": "H8Flag",
+						"type": "INT32"
+					},
+					{
+						"name": "M1Wildcard",
+						"type": "INT32"
+					},
+					{
+						"name": "StringencyIndex",
+						"type": "INT32"
+					},
+					{
+						"name": "StringencyIndexForDisplay",
+						"type": "INT32"
+					},
+					{
+						"name": "GovernmentResponseIndex",
+						"type": "INT32"
+					},
+					{
+						"name": "GovernmentResponseIndexForDisplay",
+						"type": "INT32"
+					},
+					{
+						"name": "ContainmentHealthIndex",
+						"type": "INT32"
+					},
+					{
+						"name": "ContainmentHealthIndexForDisplay",
+						"type": "INT32"
+					},
+					{
+						"name": "EconomicSupportIndex",
+						"type": "INT32"
+					},
+					{
+						"name": "EconomicSupportIndexForDisplay",
+						"type": "INT32"
+					},
+					{
+						"name": "StringencyLegacyIndex",
+						"type": "INT32"
+					},
+					{
+						"name": "StringencyLegacyIndexForDisplay",
+						"type": "INT32"
+					},
+					{
+						"name": "id",
+						"type": "UTF8"
+					},
+					{
+						"name": "_rid",
+						"type": "UTF8"
+					},
+					{
+						"name": "_self",
+						"type": "UTF8"
+					},
+					{
+						"name": "_etag",
+						"type": "UTF8"
+					},
+					{
+						"name": "_attachments",
+						"type": "UTF8"
+					},
+					{
+						"name": "_ts",
+						"type": "INT32"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage2')]"
 			]
 		},
 		{
@@ -3297,6 +3706,25 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/OnPremSQLServer')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('OnPremSQLServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "SHIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4211,14 +4639,14 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "Parquet1",
+								"referenceName": "SQLMetrics",
 								"type": "DatasetReference"
 							},
 							"name": "source1"
 						},
 						{
 							"dataset": {
-								"referenceName": "Parquet6",
+								"referenceName": "OnPremMetrics",
 								"type": "DatasetReference"
 							},
 							"name": "source2"
@@ -4311,9 +4739,123 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parquet1')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
+				"[concat(variables('factoryId'), '/datasets/SQLMetrics')]",
+				"[concat(variables('factoryId'), '/datasets/OnPremMetrics')]",
 				"[concat(variables('factoryId'), '/datasets/dboRecoveries')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow8')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Parquet9",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Parquet10",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "cast1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          CountryName as string,",
+						"          CountryCode as string,",
+						"          RegionName as string,",
+						"          RegionCode as string,",
+						"          Jurisdiction as string,",
+						"          Date as string,",
+						"          C1Schoolclosing as integer,",
+						"          C1Flag as integer,",
+						"          C2Workplaceclosing as integer,",
+						"          C2Flag as integer,",
+						"          C3Cancelpublicevents as integer,",
+						"          C3Flag as integer,",
+						"          C4Restrictionsongatherings as integer,",
+						"          C4Flag as integer,",
+						"          C5Closepublictransport as integer,",
+						"          C5Flag as integer,",
+						"          C6Stayathomerequirements as integer,",
+						"          C6Flag as integer,",
+						"          C7Restrictionsoninternalmovement as integer,",
+						"          C7Flag as integer,",
+						"          C8Internationaltravelcontrols as integer,",
+						"          E1Incomesupport as integer,",
+						"          E1Flag as integer,",
+						"          E2Debtcontractrelief as integer,",
+						"          E3Fiscalmeasures as integer,",
+						"          E4Internationalsupport as integer,",
+						"          H1Publicinformationcampaigns as integer,",
+						"          H1Flag as integer,",
+						"          H2Testingpolicy as integer,",
+						"          H3Contacttracing as integer,",
+						"          H4Emergencyinvestmentinhealthcare as integer,",
+						"          H5Investmentinvaccines as integer,",
+						"          H6FacialCoverings as integer,",
+						"          H6Flag as integer,",
+						"          H7Vaccinationpolicy as integer,",
+						"          H7Flag as integer,",
+						"          H8Protectionofelderlypeople as integer,",
+						"          H8Flag as integer,",
+						"          M1Wildcard as integer,",
+						"          StringencyIndex as integer,",
+						"          StringencyIndexForDisplay as integer,",
+						"          GovernmentResponseIndex as integer,",
+						"          GovernmentResponseIndexForDisplay as integer,",
+						"          ContainmentHealthIndex as integer,",
+						"          ContainmentHealthIndexForDisplay as integer,",
+						"          EconomicSupportIndex as integer,",
+						"          EconomicSupportIndexForDisplay as integer,",
+						"          StringencyLegacyIndex as integer,",
+						"          StringencyLegacyIndexForDisplay as integer,",
+						"          id as string,",
+						"          {_rid} as string,",
+						"          {_self} as string,",
+						"          {_etag} as string,",
+						"          {_attachments} as string,",
+						"          {_ts} as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> source1",
+						"source1 cast(output(",
+						"          Date as date",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"cast1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     partitionFileNames:['factPolicies.parquet'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Parquet9')]",
+				"[concat(variables('factoryId'), '/datasets/Parquet10')]"
 			]
 		},
 		{
@@ -4441,14 +4983,14 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "Parquet1",
+								"referenceName": "SQLMetrics",
 								"type": "DatasetReference"
 							},
 							"name": "source1"
 						},
 						{
 							"dataset": {
-								"referenceName": "Parquet6",
+								"referenceName": "OnPremMetrics",
 								"type": "DatasetReference"
 							},
 							"name": "source2"
@@ -4541,8 +5083,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Parquet1')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
+				"[concat(variables('factoryId'), '/datasets/SQLMetrics')]",
+				"[concat(variables('factoryId'), '/datasets/OnPremMetrics')]",
 				"[concat(variables('factoryId'), '/datasets/dbodeaths')]"
 			]
 		},
@@ -4639,116 +5181,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SQLMetrics')]",
 				"[concat(variables('factoryId'), '/datasets/testCases')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OnPremSQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "OnPremSQLServer",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Updated",
-						"type": "date"
-					},
-					{
-						"name": "Confirmed",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Confirmed_Change",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Deaths",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Deaths_Change",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Recovered",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Recovered_Change",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Latitude",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 5
-					},
-					{
-						"name": "Longitude",
-						"type": "decimal",
-						"precision": 10,
-						"scale": 5
-					},
-					{
-						"name": "ISO2",
-						"type": "varchar"
-					},
-					{
-						"name": "ISO3",
-						"type": "varchar"
-					},
-					{
-						"name": "Country_Region",
-						"type": "varchar"
-					},
-					{
-						"name": "load_time",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Covid19_Metrics"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/OnPremSQLServer')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OnPremSQLServer')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('OnPremSQLServer_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "SHIR",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR')]"
 			]
 		}
 	]

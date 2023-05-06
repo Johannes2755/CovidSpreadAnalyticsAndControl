@@ -41,6 +41,9 @@
 		"CosmosDbNoSql2_connectionString": {
 			"value": ""
 		},
+		"OnPremSQLServer_connectionString": {
+			"value": ""
+		},
 		"SqlServer1_connectionString": {
 			"value": ""
 		},
@@ -63,9 +66,6 @@
 			"value": ""
 		},
 		"TeamSqlServer04_connectionString": {
-			"value": ""
-		},
-		"OnPremSQLServer_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
