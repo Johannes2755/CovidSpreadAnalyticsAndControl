@@ -6,14 +6,14 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Parquet1",
+						"referenceName": "SQLMetrics",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
 				},
 				{
 					"dataset": {
-						"referenceName": "Parquet6",
+						"referenceName": "OnPremMetrics",
 						"type": "DatasetReference"
 					},
 					"name": "source2"
