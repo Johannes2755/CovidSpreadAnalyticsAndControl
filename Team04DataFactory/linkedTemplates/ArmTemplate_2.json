@@ -340,6 +340,73 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/testCases')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "metricpolicydata"
+					},
+					"compressionCodec": "none"
+				},
+				"schema": [
+					{
+						"name": "ID",
+						"type": "INT32"
+					},
+					{
+						"name": "Updated",
+						"type": "DATE"
+					},
+					{
+						"name": "Confirmed",
+						"type": "INT32"
+					},
+					{
+						"name": "Confirmed_Change",
+						"type": "INT32"
+					},
+					{
+						"name": "Latitude",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 5
+					},
+					{
+						"name": "Longitude",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 5
+					},
+					{
+						"name": "ISO2",
+						"type": "UTF8"
+					},
+					{
+						"name": "ISO3",
+						"type": "UTF8"
+					},
+					{
+						"name": "Country_Region",
+						"type": "UTF8"
+					},
+					{
+						"name": "load_time",
+						"type": "INT96"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -959,162 +1026,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/recoverysink')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow4')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "Json2",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "CosmosParquet",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [],
-					"scriptLines": [
-						"source(output(",
-						"          CountryName as string,",
-						"          CountryCode as string,",
-						"          RegionName as string,",
-						"          RegionCode as string,",
-						"          Jurisdiction as string,",
-						"          Date as string,",
-						"          {C1_School closing} as integer,",
-						"          C1_Flag as integer,",
-						"          {C2_Workplace closing} as integer,",
-						"          C2_Flag as integer,",
-						"          {C3_Cancel public events} as integer,",
-						"          C3_Flag as integer,",
-						"          {C4_Restrictions on gatherings} as integer,",
-						"          C4_Flag as integer,",
-						"          {C5_Close public transport} as integer,",
-						"          C5_Flag as integer,",
-						"          {C6_Stay at home requirements} as integer,",
-						"          C6_Flag as integer,",
-						"          {C7_Restrictions on internal movement} as integer,",
-						"          C7_Flag as integer,",
-						"          {C8_International travel controls} as integer,",
-						"          {E1_Income support} as integer,",
-						"          E1_Flag as integer,",
-						"          {E2_Debt contract relief} as integer,",
-						"          {E3_Fiscal measures} as integer,",
-						"          {E4_International support} as integer,",
-						"          {H1_Public information campaigns} as integer,",
-						"          H1_Flag as integer,",
-						"          {H2_Testing policy} as integer,",
-						"          {H3_Contact tracing} as integer,",
-						"          {H4_Emergency investment in healthcare} as integer,",
-						"          {H5_Investment in vaccines} as integer,",
-						"          {H6_Facial Coverings} as integer,",
-						"          H6_Flag as integer,",
-						"          {H7_Vaccination policy} as integer,",
-						"          H7_Flag as integer,",
-						"          {H8_Protection of elderly people} as integer,",
-						"          H8_Flag as integer,",
-						"          M1_Wildcard as integer,",
-						"          StringencyIndex as integer,",
-						"          StringencyIndexForDisplay as integer,",
-						"          StringencyLegacyIndex as integer,",
-						"          StringencyLegacyIndexForDisplay as integer,",
-						"          GovernmentResponseIndex as integer,",
-						"          GovernmentResponseIndexForDisplay as integer,",
-						"          ContainmentHealthIndex as integer,",
-						"          ContainmentHealthIndexForDisplay as integer,",
-						"          EconomicSupportIndex as integer,",
-						"          EconomicSupportIndexForDisplay as integer,",
-						"          id as string,",
-						"          {_rid} as string,",
-						"          {_self} as string,",
-						"          {_etag} as string,",
-						"          {_attachments} as string,",
-						"          {_ts} as integer",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     documentForm: 'documentPerLine') ~> source1",
-						"source1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     format: 'parquet',",
-						"     partitionFileNames:['policies.parquet'],",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     mapColumn(",
-						"          CountryName,",
-						"          CountryCode,",
-						"          RegionName,",
-						"          RegionCode,",
-						"          Jurisdiction,",
-						"          Date,",
-						"          C1Schoolclosing = {C1_School closing},",
-						"          C1Flag = C1_Flag,",
-						"          C2Workplaceclosing = {C2_Workplace closing},",
-						"          C2Flag = C2_Flag,",
-						"          C3Cancelpublicevents = {C3_Cancel public events},",
-						"          C3Flag = C3_Flag,",
-						"          C4Restrictionsongatherings = {C4_Restrictions on gatherings},",
-						"          C4Flag = C4_Flag,",
-						"          C5Closepublictransport = {C5_Close public transport},",
-						"          C5Flag = C5_Flag,",
-						"          C6Stayathomerequirements = {C6_Stay at home requirements},",
-						"          C6Flag = C6_Flag,",
-						"          C7Restrictionsoninternalmovement = {C7_Restrictions on internal movement},",
-						"          C7Flag = C7_Flag,",
-						"          C8Internationaltravelcontrols = {C8_International travel controls},",
-						"          E1Incomesupport = {E1_Income support},",
-						"          E1Flag = E1_Flag,",
-						"          E2Debtcontractrelief = {E2_Debt contract relief},",
-						"          E3Fiscalmeasures = {E3_Fiscal measures},",
-						"          E4Internationalsupport = {E4_International support},",
-						"          H1Publicinformationcampaigns = {H1_Public information campaigns},",
-						"          H1Flag = H1_Flag,",
-						"          H2Testingpolicy = {H2_Testing policy},",
-						"          H3Contacttracing = {H3_Contact tracing},",
-						"          H4Emergencyinvestmentinhealthcare = {H4_Emergency investment in healthcare},",
-						"          H5Investmentinvaccines = {H5_Investment in vaccines},",
-						"          H6FacialCoverings = {H6_Facial Coverings},",
-						"          H6Flag = H6_Flag,",
-						"          H7Vaccinationpolicy = {H7_Vaccination policy},",
-						"          H7Flag = H7_Flag,",
-						"          H8Protectionofelderlypeople = {H8_Protection of elderly people},",
-						"          H8Flag = H8_Flag,",
-						"          M1Wildcard = M1_Wildcard,",
-						"          StringencyIndex,",
-						"          StringencyIndexForDisplay,",
-						"          GovernmentResponseIndex,",
-						"          GovernmentResponseIndexForDisplay,",
-						"          ContainmentHealthIndex,",
-						"          ContainmentHealthIndexForDisplay,",
-						"          EconomicSupportIndex,",
-						"          EconomicSupportIndexForDisplay,",
-						"          StringencyLegacyIndex,",
-						"          StringencyLegacyIndexForDisplay,",
-						"          each(match(/* All input columns */true()),",
-						"               /* Input name */$$ = $$)",
-						"     ),",
-						"     partitionBy('hash', 1)) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
 		}
 	]
 }
