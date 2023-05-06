@@ -4144,7 +4144,7 @@
 						},
 						{
 							"dataset": {
-								"referenceName": "Parquet6",
+								"referenceName": "OnPremMetrics",
 								"type": "DatasetReference"
 							},
 							"name": "source2"
@@ -4238,7 +4238,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SQLMetrics')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet6')]",
+				"[concat(variables('factoryId'), '/datasets/OnPremMetrics')]",
 				"[concat(variables('factoryId'), '/datasets/dboCases')]"
 			]
 		},
