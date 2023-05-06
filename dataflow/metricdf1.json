@@ -13,7 +13,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "Parquet6",
+						"referenceName": "OnPremMetrics",
 						"type": "DatasetReference"
 					},
 					"name": "source2"
