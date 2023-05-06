@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Parquet1",
+						"referenceName": "SQLMetrics",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
