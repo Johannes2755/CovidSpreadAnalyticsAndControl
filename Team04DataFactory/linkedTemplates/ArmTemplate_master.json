@@ -87,6 +87,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'TeamSqlServer04'"
 		},
+		"OnPremSQLServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'OnPremSQLServer'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://team04storage.dfs.core.windows.net/"
@@ -225,6 +229,9 @@
 					},
 					"TeamSqlServer04_connectionString": {
 						"value": "[parameters('TeamSqlServer04_connectionString')]"
+					},
+					"OnPremSQLServer_connectionString": {
+						"value": "[parameters('OnPremSQLServer_connectionString')]"
 					}
 				}
 			},
