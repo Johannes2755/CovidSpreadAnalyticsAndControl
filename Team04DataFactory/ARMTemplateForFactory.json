@@ -1137,8 +1137,7 @@
 									"source2": {},
 									"source3": {},
 									"sink1": {}
-								},
-								"linkedServiceParameters": {}
+								}
 							},
 							"staging": {},
 							"compute": {
@@ -4345,7 +4344,7 @@
 						"          RegionName as string,",
 						"          RegionCode as string,",
 						"          Jurisdiction as string,",
-						"          Date as string,",
+						"          Date as date,",
 						"          {C1_School closing} as integer,",
 						"          C1_Flag as integer,",
 						"          {C2_Workplace closing} as integer,",
