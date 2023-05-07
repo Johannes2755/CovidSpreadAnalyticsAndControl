@@ -70,7 +70,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "data_02739f45-33d5-4f99-9f62-2f02140d5bfe_57258ed1-072c-45e0-9419-e044b3e23a02.json",
+						"fileName": "data_2acdf01a-c913-476b-bc33-d96acb5ce38a_226f1133-b25a-439f-b632-d50490c57698.json",
 						"container": "team4cosmosdb"
 					}
 				},
