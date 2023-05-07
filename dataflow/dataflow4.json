@@ -29,7 +29,7 @@
 				"          RegionName as string,",
 				"          RegionCode as string,",
 				"          Jurisdiction as string,",
-				"          Date as string,",
+				"          Date as date,",
 				"          {C1_School closing} as integer,",
 				"          C1_Flag as integer,",
 				"          {C2_Workplace closing} as integer,",
@@ -94,8 +94,6 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
-				"          each(match(/* All input columns */ true()),",
-				"               /* Input name */ $$ = $$),",
 				"          CountryName,",
 				"          CountryCode,",
 				"          RegionName,",
@@ -144,7 +142,9 @@
 				"          EconomicSupportIndex,",
 				"          EconomicSupportIndexForDisplay,",
 				"          StringencyLegacyIndex,",
-				"          StringencyLegacyIndexForDisplay",
+				"          StringencyLegacyIndexForDisplay,",
+				"          each(match(/* All input columns */true()),",
+				"               /* Input name */$$ = $$)",
 				"     ),",
 				"     partitionBy('hash', 1)) ~> sink1"
 			]
