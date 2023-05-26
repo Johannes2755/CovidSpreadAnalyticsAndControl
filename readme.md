@@ -1,1 +1,1 @@
-here is my new file
+Consolidate covid data from disparate sources into a data lake using Microsoft Azure Data Factory and develop Fact and Dimension tables in an operational data store, for use in Azure Synapse Analytics for big data processing and analysis using Power BI to identify the three most effective policies for slowing the spread of covid. 
